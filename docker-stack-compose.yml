@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:img
+    volumes:
+      - ./imagenMysql/vol-mysql:/var/lib/mysql
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    ports:
+      - 3307:3306
+
+  soapapi:
+    image: soap:ws
+    volumes:
+      - ./soap-service:/app
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    ports:
+      - 5555:5555
+    environment:
+      MYSQL_DB_HOST: mysql
+      WEB_SERVICE_SOAP_HOST: soapapi
+
+  restapi:
+    image: rest:ws
+    volumes:
+      - ./rest-service:/app
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    ports:
+      - 5050:5050
+    environment:
+      MYSQL_DB_HOST: mysql
+      WEB_SERVICE_REST_HOST: restapi
+
+  cliente:
+    image: cliente:web
+    volumes:
+      - ./app-cliente:/app
+    ports:
+      - 3000:3000
+    deploy:
+      replicas: 4
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    environment:
+      APP_CLIENTE_HOST: cliente
+      WEB_SERVICE_SOAP_HOST: soapapi

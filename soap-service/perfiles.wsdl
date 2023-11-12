@@ -1,0 +1,72 @@
+<definitions
+
+  name="PerfilesService"
+  targetNamespace="http://soapapi:5555/perfiles.wsdl"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://soapapi:5555/perfiles.wsdl"
+>
+  <types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://soapapi:5555/perfiles.wsdl">
+
+        <element name="ConsultarPerfiles">
+          <complexType />
+        </element>
+
+        <element name="ConsultarPerfilesResponse">
+          <complexType>
+            <sequence>
+              <element name="Perfil" type="tns:Perfil" maxOccurs="unbounded" />
+            </sequence>
+          </complexType>
+        </element>
+
+        <complexType name="Perfil">
+          <sequence>
+            <element name="nomUsuario" type="string" />
+            <element name="perfil" type="string" />
+            <element name="activo" type="string" />
+          </sequence>
+        </complexType>
+
+      </schema>
+  </types>
+
+  <message name="ConsultarPerfilesRequest">
+    <part name="parameters" element="tns:ConsultarPerfiles" />
+  </message>
+
+  <message name="ConsultarPerfilesResponse">
+    <part name="parameters" element="tns:ConsultarPerfilesResponse" />
+  </message>
+
+  <portType name="PerfilesPort">
+    <operation name="ConsultarPerfiles">
+      <input message="tns:ConsultarPerfilesRequest" />
+      <output message="tns:ConsultarPerfilesResponse" />
+    </operation>
+  </portType>
+
+  <binding name="PerfilesPortBinding" type="tns:PerfilesPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="ConsultarPerfiles">
+      <soap:operation soapAction="http://soapapi:5555/perfiles.wsdl#ConsultarPerfiles" style="document" />
+
+      <input>
+        <soap:body use="literal" />
+      </input>
+
+      <output>
+        <soap:body use="literal" />
+      </output>
+
+    </operation>
+  </binding>
+
+  <service name="PerfilesService">
+    <port name="PerfilesPort" binding="tns:PerfilesPortBinding">
+      <soap:address location="http://soapapi:5555/consultar_con_soap" />
+    </port>
+  </service>
+
+</definitions>

@@ -56,16 +56,15 @@
 
 ###   Abrir un **CLI** dentro del directorio clonado, debe estar ubicado al mismo nivel del fichero **"docker-stack-compose.yml"**.
 
-
+##
 1. ## **Inicializamos docker swarm con el siguiente comando**:
 
       ```bash
       docker swarm init
       ```
-
+##
 ### **Es importante crear previamente las imagenes utilizando los ficheros Dockerfile especificos para cada servicio**.
-### **No es necesario cambiarse a cada uno de los directorios para ejecutar los siguientes comandos**.
-
+## **No es necesario cambiarse a cada uno de los directorios para ejecutar los siguientes comandos**.
 
 2. ## **Creamos primero la imagen de mysql a partir del fichero Dockerfile ubicado en el directorio imagenMysql**:
 
@@ -74,28 +73,31 @@
       ```
       * Ya esta especificado en el Dockerfile el script que crea la base de datos y la tabla 'perfiles'.
 
-3. ## **Luego creamos la imagen del Servicio Web SOAP con el siguiente comando**:
+##
+3. ## **Creamos la imagen del Servicio Web SOAP con el siguiente comando**:
 
       ```bash
       docker build -t soap:ws ./soap-service/
       ```
 
+##
 4. ## **Creamos la imagen de la REST API con el siguiente comando**:
 
       ```bash
       docker build -t rest:ws ./rest-service/
       ```
 
+##
 5. ## **Creamos la imagen de la app desde la cual se consumiran los Servicio Web SOAP y REST, con el siguiente comando**:
 
       ```bash
       docker build -t cliente:web ./app-cliente/
       ```
 
-### **Luego de crear cada una de estas imagenes especificada en el 'docker-stack-compose.yml' podemos continuar**.
-
-
-6. ## **Para desplegar los servicios como parte de un stack en un entorno de Swarm ejecuta esl siguiente comando**:
+##
+### **Luego de crear cada una de estas imagenes necesarias y especificadas en el 'docker-stack-compose.yml' podemos continuar**.
+##
+6. ## **Para desplegar los servicios como parte de un stack en un entorno de Swarm ejecutar el siguiente comando**:
 
       ```bash
       docker stack deploy -c docker-stack-compose.yml app
@@ -104,7 +106,7 @@
 
 ### **Deberian haberse creado los servicios con 1 replica cada uno, excepto el servicio cliente al que se especifico 4 replicas**.
 
-
+##
 7. ## **Puede verificar que los servicios se estan ejecutando correctamente usando el siguiente comando**:
 
       ```bash
@@ -112,14 +114,14 @@
       ```
    * Deberia poder visualidar cada uno de los servicios desplegados.
 
-### **Si todo esta correcto podria ver la tabla con los datos consultados, ademas del formulario para insertar nuevos registros**.
-### **Solo debe abrir un navegador y ejecutar la siguiente direccion "http://localhost:3000"**.
+##
+### **Si es la primera vez que inicia el stack es necesario esperar alrededor de 1 min a que termine de iniciar la Base de datos antes de continuar**.
+### **Para probar la app solo debe seguir el siguiente vinculo =>  "http://localhost:3000"**.
+### **Si todo esta correcto deberia visualizar una tabla con los datos consultados, ademas del formulario para insertar nuevos registros**.
 
 ##
 
-
-### **Luego de realizar las pruebas que crea necesarias debe eliminar el Stack creado antes junto con los servicios desplegados dentro**.
-
+### **Luego de realizar las pruebas que crea necesarias puede eliminar el Stack creado antes junto con los servicios desplegados dentro**.
 
 8. ## **Ejecute el siguiente comando para eliminar el stack 'app' que se creo al momento de desplegar**:
 
@@ -128,12 +130,18 @@
       ```
    * Al eliminar el stack se eliminaran tambien la red que creo por defecto y los servicios que se estaban ejecutando dentro
 
-
-9. ## **Si necesita eliminar tambien las imagenes creadas en los primeros pasos solo ejecute el siguiente comando**:
+##
+9. ## **Puede tambien eliminar las imagenes creadas en los primeros pasos solo ejecutando el siguiente comando**:
 
       ```bash
       docker rmi cliente:web rest:ws soap:ws mysql:img
       ```
 
-
 ## **Puede ejecutar los comandos a partir del paso 2 las veces que quiera y no deberia tener inconvenientes**.
+
+10. ## **Por ultimo luego de realizar las pruebas puede detener docker swarm ejecutando el siguiente comando**:
+
+      ```bash
+      docker swarm leave -f
+      ```
+##

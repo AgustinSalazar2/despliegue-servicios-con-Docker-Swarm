@@ -3,6 +3,8 @@ version: '3.8'
 services:
   mysql:
     image: mysql:img
+    environment:
+      - MYSQL_ROOT_PASSWORD=root1
     volumes:
       - ./imagenMysql/vol-mysql:/var/lib/mysql
     deploy:
@@ -14,8 +16,6 @@ services:
 
   soapapi:
     image: soap:ws
-    volumes:
-      - ./soap-service:/app
     deploy:
       replicas: 1
       restart_policy:
@@ -29,8 +29,6 @@ services:
 
   restapi:
     image: rest:ws
-    volumes:
-      - ./rest-service:/app
     deploy:
       replicas: 1
       restart_policy:
@@ -44,12 +42,10 @@ services:
 
   cliente:
     image: cliente:web
-    volumes:
-      - ./app-cliente:/app
     ports:
       - 3000:3000
     deploy:
-      replicas: 4
+      replicas: 2
       restart_policy:
         condition: on-failure
         delay: 5s

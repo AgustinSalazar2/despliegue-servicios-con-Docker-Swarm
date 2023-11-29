@@ -1,4 +1,4 @@
-FROM mysql:latest
+FROM mysql:5.5
 
 # Copiamos el archivo SQL para inicializar la base de datos
 COPY ./initMysql /docker-entrypoint-initdb.d
